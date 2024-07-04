@@ -37,16 +37,15 @@ def synchronization(of, rf, logger):
         if file in replica_files:
             exists_in_replica = True
 
-        if exists_in_origin == exists_in_replica:
+        if exists_in_origin == exists_in_replica: # if it exists in both we're going to see if the file or directory has been changed
             if os.path.isdir(f'{of}\{file}'):
-                synchronization(f'{of}\{file}', f'{rf}\{file}', logger)
+                synchronization(f'{of}\{file}', f'{rf}\{file}', logger) # if it's a directory we must synchronize it again
             else: 
                 if md5_file(f'{of}\{file}') != md5_file(f'{rf}\{file}'): # compare hash of both files to see if there are any changes 
                     shutil.copyfile(f'{of}\{file}', f'{rf}\{file}')
                     logger.info(f'Copied the following file: {rf}\{file}')
 
-        
-        if exists_in_origin and not exists_in_replica:
+        if exists_in_origin and not exists_in_replica: # if it's in origin and not in replica it must be copied
             if os.path.isdir(f'{of}\{file}'):
                 shutil.copytree(f'{of}\{file}', f'{rf}\{file}')
                 logger.info(f'Created the following directory: {rf}\{file}')
@@ -54,7 +53,7 @@ def synchronization(of, rf, logger):
                 shutil.copyfile(f'{of}\{file}', f'{rf}\{file}')
                 logger.info(f'Created the following file: {rf}\{file}')
 
-        if not exists_in_origin and exists_in_replica:
+        if not exists_in_origin and exists_in_replica: # if it's in replica and not in origin it must be removed
             if os.path.isdir(f'{rf}\{file}'):
                 shutil.rmtree(f'{rf}\{file}')
                 logger.info(f'Removed the following directory: {rf}\{file}')
