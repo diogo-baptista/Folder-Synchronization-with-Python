@@ -45,7 +45,7 @@ def synchronization(of, rf, logger):
                     shutil.copyfile(f'{of}\{file}', f'{rf}\{file}')
                     logger.info(f'Copied the following file: {rf}\{file}')
 
-        if exists_in_origin and not exists_in_replica: # if it's in origin and not in replica it must be copied
+        if exists_in_origin and not exists_in_replica: # if it's in origin and not in replica it must be copied to replica folder
             if os.path.isdir(f'{of}\{file}'):
                 shutil.copytree(f'{of}\{file}', f'{rf}\{file}')
                 logger.info(f'Created the following directory: {rf}\{file}')
@@ -53,7 +53,7 @@ def synchronization(of, rf, logger):
                 shutil.copyfile(f'{of}\{file}', f'{rf}\{file}')
                 logger.info(f'Created the following file: {rf}\{file}')
 
-        if not exists_in_origin and exists_in_replica: # if it's in replica and not in origin it must be removed
+        if not exists_in_origin and exists_in_replica: # if it's in replica and not in origin it must be removed from replica folder
             if os.path.isdir(f'{rf}\{file}'):
                 shutil.rmtree(f'{rf}\{file}')
                 logger.info(f'Removed the following directory: {rf}\{file}')
