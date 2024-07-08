@@ -7,7 +7,7 @@ import logging
 
 def md5_file(file_path):  # calculates the file's checksum and returns its hash in a hexadecimal string
     with open(file_path, 'rb') as file:
-        block = 8192 # MD5 is 128 bytes so we divide our file into 64 parts not to overload memory 
+        block = 8192 # divide into blocks not to overload memory (could happen with big files), has to be a multiple of 128 because of MD5
         md5 = hashlib.md5()
         while True:
             file_data = file.read(block)
